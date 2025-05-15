@@ -63,7 +63,7 @@ function CabinRow({ cabin }) {
     description,
   } = cabin;
 
-  const { isLoading, createCabin } = useCreateCabin();
+  const { createCabin } = useCreateCabin();
 
   function handleDuplicate() {
     createCabin({

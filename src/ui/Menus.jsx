@@ -63,6 +63,10 @@ const StyledButton = styled.button`
     color: var(--color-grey-400);
     transition: all 0.3s;
   }
+
+  &:hover svg {
+    color: var(--color-brand-700);
+  }
 `;
 
 const MenusContext = createContext();

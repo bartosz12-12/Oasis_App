@@ -6,6 +6,9 @@ import Table from "../../ui/Table";
 
 import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
+import Menus from "../../ui/Menus";
+import { HiArrowDownOnSquare, HiEye, HiPencil, HiTrash } from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -48,6 +51,8 @@ function BookingRow({
     cabins: { name: cabinName },
   },
 }) {
+  const navigate = useNavigate();
+
   const statusToTagName = {
     unconfirmed: "blue",
     "checked-in": "green",
@@ -57,12 +62,10 @@ function BookingRow({
   return (
     <Table.Row>
       <Cabin>{cabinName}</Cabin>
-
       <Stacked>
         <span>{guestName}</span>
         <span>{email}</span>
       </Stacked>
-
       <Stacked>
         <span>
           {isToday(new Date(startDate))
@@ -75,10 +78,30 @@ function BookingRow({
           {format(new Date(endDate), "MMM dd yyyy")}
         </span>
       </Stacked>
-
       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
-
       <Amount>{formatCurrency(totalPrice)}</Amount>
+      <Menus.Menu>
+        <Menus.Toggle id={bookingId} />
+        <Menus.List id={bookingId}>
+          <Menus.Button
+            icon={<HiEye />}
+            onClick={() => navigate(`/booking/${bookingId}`)}
+          >
+            See details
+          </Menus.Button>
+          {status === "unconfirmed" && (
+            <Menus.Button
+              icon={<HiArrowDownOnSquare />}
+              onClick={() => navigate(`/checkin/${bookingId}`)}
+            >
+              Check-in
+            </Menus.Button>
+          )}
+
+          {/* <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+          <Menus.Button icon={<HiTrash />}>Delete</Menus.Button> */}
+        </Menus.List>
+      </Menus.Menu>
     </Table.Row>
   );
 }
