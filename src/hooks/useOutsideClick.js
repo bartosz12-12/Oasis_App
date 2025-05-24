@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-export function useOutsideClick(close) {
+export function useOutsideClick(close, listenCapturing = true) {
   const ref = useRef();
 
   useEffect(
@@ -8,11 +8,12 @@ export function useOutsideClick(close) {
       function handleClick(e) {
         if (ref.current && !ref.current.contains(e.target)) close();
       }
-      document.addEventListener("click", handleClick, true);
+      document.addEventListener("click", handleClick, listenCapturing);
 
-      return () => document.removeEventListener("click", handleClick, true);
+      return () =>
+        document.removeEventListener("click", handleClick, listenCapturing);
     },
-    [close]
+    [close, listenCapturing]
   );
 
   return { ref };
